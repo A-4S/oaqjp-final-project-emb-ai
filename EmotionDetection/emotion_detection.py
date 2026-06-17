@@ -22,24 +22,35 @@ def emotion_detector(text_to_analyze: str) -> str:
     myobj = { "raw_document": { "text": text_to_analyze } }
 
     response = requests.post(url, headers=headers, json=myobj)
-    
-    res_json = json.loads(response.text)
 
-    predictions = res_json["emotionPredictions"][0]
-    
-    emotion = predictions["emotion"]
+    if response.status_code == 400:
+        return {
+            'anger': None,
+            'disgust': None,
+            'fear': None,
+            'joy': None,
+            'sadness': None,
+            'dominant_emotion': None
+        }
 
-    anger_score = emotion["anger"]
-    disgust_score = emotion["disgust"]
-    fear_score = emotion["fear"]
-    joy_score = emotion["joy"]
-    sadness_score = emotion["sadness"]
+    if response.status_code == 200:
+        res_json = json.loads(response.text)
 
-    return {
-        'anger': anger_score,
-        'disgust': disgust_score,
-        'fear': fear_score,
-        'joy': joy_score,
-        'sadness': sadness_score,
-        'dominant_emotion': max_emotion(emotion)
-    }
+        predictions = res_json["emotionPredictions"][0]
+        
+        emotion = predictions["emotion"]
+
+        anger_score = emotion["anger"]
+        disgust_score = emotion["disgust"]
+        fear_score = emotion["fear"]
+        joy_score = emotion["joy"]
+        sadness_score = emotion["sadness"]
+
+        return {
+            'anger': anger_score,
+            'disgust': disgust_score,
+            'fear': fear_score,
+            'joy': joy_score,
+            'sadness': sadness_score,
+            'dominant_emotion': max_emotion(emotion)
+        }
