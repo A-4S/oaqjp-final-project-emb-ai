@@ -3,7 +3,6 @@ import requests
 import json
 from functools import reduce
 from typing import Iterable
-from rich import print
 
 
 def emotion_detector(text_to_analyze: str) -> str:
