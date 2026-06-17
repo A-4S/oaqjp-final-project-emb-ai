@@ -11,9 +11,10 @@ def emotion():
 
     e = emotion_detector(req)
 
-    res = f"For the given statement, the system response is 'anger': {e['anger']}, 'disgust': {e['disgust']}, 'fear': {e['fear']}, 'joy': {e['joy']}, and 'sadness': {e['sadness']}. The dominant emotion is {e['dominant_emotion']}."
+    if e["dominant_emotion"] is None:
+        return "Invalid text! Please try again!"
 
-    return res
+    return f"For the given statement, the system response is 'anger': {e['anger']}, 'disgust': {e['disgust']}, 'fear': {e['fear']}, 'joy': {e['joy']}, and 'sadness': {e['sadness']}. The dominant emotion is {e['dominant_emotion']}."
 
 
 @app.route("/")
